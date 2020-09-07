@@ -2,7 +2,22 @@
 const path = require('path')
 const express = require('express')
 const exphbs = require('express-handlebars')
+const bodyParser = require("body-parser");
 const app = express()
+
+const urlencodedParser = bodyParser.urlencoded({extended: false});
+
+app.use(express.static('static'));
+app.use(express.json())
+
+app.post('/users', urlencodedParser, function (req, res) {
+  // извлекаем данные пользователя из тела запроса
+  // console.log(req)
+  if(!req.body) 
+    return res.sendStatus(400);
+  console.log(req.body);
+  res.send(req.body.userName + " - " + req.body.userAge);
+})
 
 app.get('/blog', (request, response) => {
     response.render('blog/blog')
@@ -13,8 +28,6 @@ app.get('/', (request, response) => {
         json: 'here'
     })
 })
-
-app.use(express.static('static'));
 
 app.engine('.hbs', exphbs({
     defaultLayout: 'main',
