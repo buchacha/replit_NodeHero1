@@ -1,12 +1,12 @@
-// содежимое index.js
-const http = require('http')
+
+
+const express = require('express')
+const app = express()
 const port = 3000
-const requestHandler = (request, response) => {
-    console.log(request.url)
-    response.end('Hello Node.js Server with git repository inside!')
-}
-const server = http.createServer(requestHandler)
-server.listen(port, (err) => {
+app.get('/', (request, response) => {
+    response.send('▀██▀─▄███▄─▀██─██▀██▀▀█\n─██─███─███─██─██─██▄█\n─██─▀██▄██▀─▀█▄█▀─██▀█\n▄██▄▄█▀▀▀─────▀──▄██▄▄█\n\nwith express library')
+})
+app.listen(port, (err) => {
     if (err) {
         return console.log('something bad happened', err)
     }
