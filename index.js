@@ -1,31 +1,23 @@
-//последовательная обработка запроса request 
-//можно добавлять свойства к запросу – сощная функция
-
 const express = require('express')
 const app = express()
 
 var delayInMilliseconds = 1000; //1 second
 
-app.use((request, response, next) => {
-    console.log('hi me 1')
-    setTimeout(function() {next()}, delayInMilliseconds);
-    
+app.get('/', (request, response, next) => {
+    setTimeout(function() {console.log('ha-ha-ha')}, delayInMilliseconds); //now works 
+    response.send('everything works because'+request.param('status'))
+    // setTimeout(function() {console.log('ha-ha-ha')}, delayInMilliseconds); //isn't work
 })
 
-app.use((request, response, next) => {
-    console.log('hi me 2')
-    setTimeout(function() {next()}, delayInMilliseconds);
-    
+app.get('/err', (request, response, next) => {
+    throw new Error('oops')
+    // setTimeout(function() {console.log('ha-ha-ha')}, delayInMilliseconds); //isn't work
+    // 
 })
 
-app.use((request, response, next) => {
-    request.chance = Math.random()
-    setTimeout(function() {next()}, delayInMilliseconds);
-})
-
-app.get('/hi', (request, response) => {
-    response.json({
-        chance: request.chance
-    })
+app.use((err, request, response, next) => {
+    // логирование ошибки, пока просто console.log
+    console.log(err)
+    response.status(500).send('Something broke!')
 })
 app.listen(3000)
