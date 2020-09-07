@@ -1,14 +1,30 @@
-
+//последовательная обработка запроса request
 
 const express = require('express')
 const app = express()
-const port = 3000
-app.get('/', (request, response) => {
-    response.send('▀██▀─▄███▄─▀██─██▀██▀▀█\n─██─███─███─██─██─██▄█\n─██─▀██▄██▀─▀█▄█▀─██▀█\n▄██▄▄█▀▀▀─────▀──▄██▄▄█\n\nwith express library')
+
+var delayInMilliseconds = 1000; //1 second
+
+app.use((request, response, next) => {
+    console.log('hi me 1')
+    setTimeout(function() {next()}, delayInMilliseconds);
+    
 })
-app.listen(port, (err) => {
-    if (err) {
-        return console.log('something bad happened', err)
-    }
-    console.log(`server is listening on ${port}`)
+
+app.use((request, response, next) => {
+    console.log('hi me 2')
+    setTimeout(function() {next()}, delayInMilliseconds);
+    
 })
+
+app.use((request, response, next) => {
+    request.chance = Math.random()
+    setTimeout(function() {next()}, delayInMilliseconds);
+})
+
+app.get('/hi', (request, response) => {
+    response.json({
+        chance: request.chance
+    })
+})
+app.listen(3000)
