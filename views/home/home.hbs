@@ -30,17 +30,18 @@
 
   <div class="album py-5 bg-light">
     <div class="container">
-
       <div class="row">
-        <div class="col-md-4">
-          <div class="card mb-4 shadow-sm">
-            <img class="bd-placeholder-img card-img-top"  src="https://media.wired.com/photos/5d09594a62bcb0c9752779d9/master/pass/Transpo_G70_TA-518126.jpg" >
-              
-            <div class="card-body">
-              <p class="card-text">job summary</p>
+        {{#each users}}
+          <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+              <img class="bd-placeholder-img card-img-top"  src="https://media.wired.com/photos/5d09594a62bcb0c9752779d9/master/pass/Transpo_G70_TA-518126.jpg" >
+                
+              <div class="card-body">
+                <p class="card-text">{{name}}</p>
+              </div>
             </div>
           </div>
-        </div>
+        {{/each}}
       </div>
     </div>
   </div>
