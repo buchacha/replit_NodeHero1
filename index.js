@@ -4,6 +4,7 @@ const express = require('express')
 const exphbs = require('express-handlebars')
 const bodyParser = require("body-parser");
 const app = express()
+const fs = require('fs')
 
 const urlencodedParser = bodyParser.urlencoded({extended: false});
 
@@ -11,12 +12,11 @@ app.use(express.static('static'));
 app.use(express.json())
 
 app.post('/users', urlencodedParser, function (req, res) {
-  // извлекаем данные пользователя из тела запроса
-  // console.log(req)
   if(!req.body) 
     return res.sendStatus(400);
-  console.log(req.body);
-  res.send(req.body.userName + " - " + req.body.userAge);
+  fs.appendFile('users.txt', JSON.stringify({name: req.body.name, age: req.body.age }), (err) => {  
+    res.send(req.body.name + " - " + req.body.age + ': successfully registered')
+  })
 })
 
 app.get('/blog', (request, response) => {
