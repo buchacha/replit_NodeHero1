@@ -1,0 +1,25 @@
+/* Small Devices */
+@media only screen and (max-width: 767px) {
+    
+    .navbar-default {
+        background-color: #fff !important;
+        border-color: #e6e6e6;
+    }
+    
+    .purchase-now .col-md-3 {
+        text-align: center;
+        padding-top: 50px;
+    }
+}
+
+/* Small Devices And Tablets */
+@media only screen and (max-width: 768px) {
+    
+    .header-iphone {
+        display: none;
+    }
+    
+    .header-text, .header-btns {
+        text-align: center;
+    }
+}

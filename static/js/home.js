@@ -1,3 +1,4 @@
+//smooth scrolling 
 $(document).ready(function() {
     
     'use strict';
@@ -35,4 +36,16 @@ $(document).ready(function() {
           }
         }
       });
+});
+
+//Add bx slider
+$(document).ready(function() {  // нужно отцентровать div со слайдером
+  $('.bxslider').bxSlider({
+      slideWidth: 400,
+      auto: true,
+      minSlides: 1,
+      maxSlides: 1,
+      slideMargin: 50,
+      shrinkItems: true
+  });
 });

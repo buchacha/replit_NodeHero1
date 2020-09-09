@@ -1,0 +1,25 @@
+.btn-email,
+.btn-email:focus,
+.btn-email:active,
+.btn-email:visited {
+    
+    background: transparent;
+    border-color: #009ea1;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    font-size: 19px;
+    text-transform: uppercase;
+    border-radius: 3px;
+    transition: all 1s;
+    -webkit-transition: all 1s;
+    -moz-transition: all 1s;
+    -o-transition: all 1s; 
+    color: #00d8dc;
+}
+
+.btn-email:hover {
+    background-color: #00d8dc;
+    color: #fff;
+}

@@ -4,6 +4,7 @@ const express = require('express')
 const exphbs = require('express-handlebars')
 const bodyParser = require("body-parser");
 const fs = require('fs')
+var formidable = require('formidable');
 
 'use strict'
 const pg = require('pg')
@@ -51,14 +52,6 @@ app.get('/users', function (req, res, next) {
   })
 })
 
-// app.post('/users', urlencodedParser, function (req, res) {
-//   if(!req.body) 
-//     return res.sendStatus(400);
-//   fs.appendFile('users.txt', JSON.stringify({name: req.body.name, age: req.body.age }), (err) => {  
-//     res.send(req.body.name + " - " + req.body.age + ': successfully registered')
-//   })
-// })
-
 app.get('/blog', (request, response) => {
   pg.connect(conString, function (err, client, done) {
     
@@ -73,14 +66,45 @@ app.get('/blog', (request, response) => {
         // Передача ошибки в обработчик express
         return next(err)
       }
-      console.log(result.rows)
       response.render('blog/blog', {users : result.rows})
     })
 
   })
 })
 
-app.get('/', (request, response) => {
+app.post('/upload', (request, response) => {
+
+  var form = new formidable.IncomingForm();
+  form.parse(request, function (err, fields, files) {
+    var oldpath = files.file.path;
+    var newpath = 'upload/' + files.file.name;
+    fs.rename(oldpath, newpath, function (err) {
+      if (err) throw err;
+      response.redirect('back');   
+    });
+  });
+
+  // pg.connect(conString, function (err, client, done) {
+    
+  //   if (err) {
+  //     // Передача ошибки в обработчик express
+  //     return next(err)
+  //   }
+    
+  //   client.query('SELECT name, age FROM users;', [], function (err, result) {
+  //     done()
+  //     if (err) {
+  //       // Передача ошибки в обработчик express
+  //       return next(err)
+  //     }
+  //     console.log(result.rows)
+  //     response.render('home/home', {users : result.rows})
+  //   })
+
+  // })
+})
+
+app.get('/', (request, response, next) => {
 
   pg.connect(conString, function (err, client, done) {
     
@@ -89,7 +113,11 @@ app.get('/', (request, response) => {
       return next(err)
     }
     
-    client.query('SELECT name, age FROM users;', [], function (err, result) {
+    client.query(
+      `SELECT name, age FROM users 
+      ORDER BY age
+      LIMIT 10;`, 
+      [], function (err, result) {
       done()
       if (err) {
         // Передача ошибки в обработчик express

@@ -19,43 +19,9 @@
 
   <section class="jumbotron text-center">
     <div class="container">
-      <h1>Hi, I'm Egor.</h1>
-      <p class="lead text-muted">I'm Egor Krasilnikov and I love to make Django websites. Besides I'm developer of cross-platform mobile applications. </p>
-      <p>
-        <a href="mailto:egor322129@gmail.com" class="btn btn-email">Email Me</a>
-      </p>
-        <img src="https://specials-images.forbesimg.com/imageserve/5d35eacaf1176b0008974b54/960x0.jpg" width="200px" style="border-radius: 25px; border: 1px solid #007bff; padding: 3px">
-        {{#if submit}}
-          <p>file was uploaded</p>
-        {{/if}}
-        <form method="post" enctype="multipart/form-data" action="/upload">
-            <input type="file" name="file">
-            <input type="submit" value="Submit">
-        </form>
-
+      <h1>File was downloaded</h1>
     </div>
   </section>
-
-  <div class="container">
-    <div class="row justify-content-md-center">
-
-
-      <div class="bxslider">
-          {{#each users}} 
-            <div class="item">
-                <div class="card mb-4 shadow-sm">
-                  <img class="bd-placeholder-img card-img-top"  src="https://media.wired.com/photos/5d09594a62bcb0c9752779d9/master/pass/Transpo_G70_TA-518126.jpg" >
-                  <div class="card-body">
-                    <p class="card-text">{{name}}</p>
-                  </div>
-                </div>
-              
-            </div>
-          {{/each}}    
-      </div>
-
-    </div>
-  </div>
 
 </main>
 
@@ -78,7 +44,5 @@
 
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
-<!--        BX Slider-->
-<script src="js/jquery.bxslider.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="js/home.js"></script>
