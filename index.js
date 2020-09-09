@@ -7,7 +7,8 @@ const fs = require('fs')
 var formidable = require('formidable');
 
 'use strict'
-const pg = require('pg')
+const pg = require('pg');
+const { isContext } = require('vm');
 const conString = 'postgres://egorkrasilnikov:@localhost/node_hero' // Убедитесь, что вы указали данные от вашей базы данных
 
 const app = express()
@@ -60,13 +61,16 @@ app.get('/blog', (request, response) => {
       return next(err)
     }
     
-    client.query('SELECT name, age FROM users;', [], function (err, result) {
+    client.query(
+      `SELECT blog_name, image_url FROM blogs 
+      ORDER BY blog_name;`, 
+      [], function (err, result) {
       done()
       if (err) {
         // Передача ошибки в обработчик express
         return next(err)
       }
-      response.render('blog/blog', {users : result.rows})
+      response.render('blog/blog', {blogs : result.rows})
     })
 
   })
@@ -77,31 +81,13 @@ app.post('/upload', (request, response) => {
   var form = new formidable.IncomingForm();
   form.parse(request, function (err, fields, files) {
     var oldpath = files.file.path;
-    var newpath = 'upload/' + files.file.name;
+    var newpath = 'static/' + 'icon.jpg';
+    console.log(request);
     fs.rename(oldpath, newpath, function (err) {
-      if (err) throw err;
+      if (err) throw err; //return next(err);
       response.redirect('back');   
     });
   });
-
-  // pg.connect(conString, function (err, client, done) {
-    
-  //   if (err) {
-  //     // Передача ошибки в обработчик express
-  //     return next(err)
-  //   }
-    
-  //   client.query('SELECT name, age FROM users;', [], function (err, result) {
-  //     done()
-  //     if (err) {
-  //       // Передача ошибки в обработчик express
-  //       return next(err)
-  //     }
-  //     console.log(result.rows)
-  //     response.render('home/home', {users : result.rows})
-  //   })
-
-  // })
 })
 
 app.get('/', (request, response, next) => {
@@ -112,21 +98,50 @@ app.get('/', (request, response, next) => {
       // Передача ошибки в обработчик express
       return next(err)
     }
-    
     client.query(
-      `SELECT name, age FROM users 
-      ORDER BY age
-      LIMIT 10;`, 
+      `SELECT blog_name, image_url FROM blogs 
+      ORDER BY blog_name
+      LIMIT 3;`, 
       [], function (err, result) {
       done()
       if (err) {
         // Передача ошибки в обработчик express
         return next(err)
       }
-      console.log(result.rows)
-      response.render('home/home', {users : result.rows})
+      response.render('home/home', {blogs : result.rows})
     })
+  })
+})
 
+app.get('/blog/add', (request, response, next) => {
+  response.render('blog/add')
+})
+
+app.post('/blog/add', (request, response, next) => {
+  pg.connect(conString, function (err, client, done) {
+    if (err) {
+      // Передача ошибки в обработчик express
+      return next(err)
+    }
+
+    var form = new formidable.IncomingForm();
+    form.parse(request, function (err, fields, files) {
+      var oldpath = files.image.path;
+      var newpath = 'static/upload/' + files.image.name.replace(/ /g,'');
+      db_path = 'upload/' + files.image.name.replace(/ /g,'');
+      fs.rename(oldpath, newpath, function (err) {
+        if (err) return next(err);
+
+        client.query('INSERT INTO blogs (blog_name, image_url) VALUES ($1, $2);', [fields.blog_name, db_path], function (err, result) {
+          done() 
+          if (err) {
+            // Передача ошибки в обработчик express
+            return next(err)
+          }
+          response.redirect('/blog');
+        })
+      });
+    });
   })
 })
 

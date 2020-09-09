@@ -1,1 +1,5 @@
-{"name":"aaa","age":"222"}{"name":"egor","age":"23"}{"name":"egor","age":"25"}{"name":"egor","age":"25"}
+CREATE TABLE blogs (
+    blog_id serial primary key,
+    blog_name varchar(200) NOT NULL,
+    image_url varchar(400)
+);

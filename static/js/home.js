@@ -49,3 +49,14 @@ $(document).ready(function() {  // нужно отцентровать div со 
       shrinkItems: true
   });
 });
+
+// // auto submit photo
+// $('#upload-photo').change(function(){
+//   let frm = document.getElementById("form-photo");
+//   frm.submit();
+// })
+
+// function chooseFile() {
+//   console.log('here 1')
+//   $("#upload-photo").click();
+// }
